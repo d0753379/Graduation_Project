@@ -73,9 +73,12 @@ public class SQL {
 		String sql;
 		String X = "1";
 		String Y = "2";
+		String Build_time = "2000";
 		String Build_name = "StoneBuilding";
 		//sql = "UPDATE `asset` SET `Game_money`='"+Game_money+"',`Virtual_money`='"+Virtual_money+"',`Metal`='"+Metal+"',`Wood`='"+Wood+"',`Stone`='"+Stone+"',`Food`='"+Food+"',`Tool`='"+Tool+"' WHERE `User_ID`= '"+User_ID+"'";
-		sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"')";
+		//sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"')";
+		sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`, `Build_time`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"','"+Build_time+"')";
+
 		//SQL.insert_update(sql);
 		SQL.insert_update(sql);
 		/*

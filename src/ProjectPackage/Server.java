@@ -57,8 +57,11 @@ public class Server extends Thread implements Runnable {
 				case "Save_request":
 					Save_request.save(server,jsonin);
 					break;
+				case "Build_check":
+					Build_request.Build_check(server, jsonin);
+					break;
 				case "Build_request":
-					//Build_check();
+					Build_request.Build(server,jsonin);
 					break;
 				default:
 					System.out.println("Error!");

@@ -16,7 +16,6 @@ public class Build_request {
 	static void Build_check(Socket server,JSONObject jsonin) throws IOException{
 		String User_ID = Server.userlist.get(server);
 		String Button_name = jsonin.getString("Button_name");
-		String Build_name = jsonin.getString("Build_name");
 		
 		//從Button_name切割出X,Y
 		String X = Button_name.replaceAll("[A-Za-z_]","");
@@ -34,7 +33,7 @@ public class Build_request {
 	    X = sb.toString();
 	    String Y = X.substring(X.indexOf('-')+1, X.length());
 	    X = X.substring(0, X.indexOf('-'));
-	    //切割完
+	    //X,Y切割完
 		JSONObject jsonout = new JSONObject();
         DataOutputStream out = new DataOutputStream(server.getOutputStream());
         String str = new String(); 
@@ -47,7 +46,9 @@ public class Build_request {
         	//{"Data_name":"Build_Error"}
         }
         else {
-        	//第二次撈資料庫確認該建築有沒有存在
+        	//回傳建造這個建築物，且記錄到資料庫
+        	jsonout.put("Data_name","Build_Success");
+        	/*第二次撈資料庫確認該建築有沒有存在
         	sql = "SELECT `User_ID`, `Build_name`, `X`, `Y` FROM `land` WHERE User_ID = '"+User_ID+"' && Build_name = '"+Build_name+"'";
         	rs = SQL.select(sql);
         	if(rs!=null) {
@@ -60,20 +61,22 @@ public class Build_request {
             	jsonout.put("Data_name","Build_Success");
             	Build_build(server,jsonin);
         	}
-        	
+        	*/
         }
+        //放X,Y軸進json
     	jsonout.put("X", X);
     	jsonout.put("Y", Y);
         str = jsonout.toString();	
         b=str.getBytes();
-        out.write(b);        		
+        out.write(b);	        		
 	}
-	static void Build_build(Socket server,JSONObject jsonin){
+	static void Build(Socket server,JSONObject jsonin){
 		String User_ID = Server.userlist.get(server);
 		String Build_name = jsonin.getString("Build_name");
+		String Build_time = jsonin.getString("Build_time");
 		String X = jsonin.getString("X");
 		String Y = jsonin.getString("Y");
-		String sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"')";
+		String sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`, `Build_time`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"','"+Build_time+"')";
 		SQL.insert_update(sql);
 	}
 }
