@@ -28,8 +28,10 @@ public class Server extends Thread implements Runnable {
 
 	public void run() {
 		boolean go = true;
+	
 		while (go) {
 			try {
+				server.getKeepAlive();
 				DataInputStream inputStream = null;// 收JSON
 				DataOutputStream outputStream = null;// 送圖片byte
 				DataOutputStream out = null;
@@ -39,8 +41,17 @@ public class Server extends Thread implements Runnable {
 				inputStream = new DataInputStream(server.getInputStream());
 				byte[] by = new byte[2048];
 				inputStream.read(by);// JSON型態是byte所以用byte收
+				
 				strInputstream = new String(by);// byte轉String
-
+				
+				//斷線
+				
+				if(!strInputstream.startsWith("{")){
+					socketlist.remove(userlist.get(server));
+					userlist.remove(server);
+						break;
+				}
+				
 				// server.shutdownInput();
 				// inputStream.close();
 				// baos.close();
@@ -51,28 +62,31 @@ public class Server extends Thread implements Runnable {
 				dataName = (String) jsonin.get("Data_name");
 
 				switch (dataName) {
-				case "Login_request":
-					Login_request.Login(server, jsonin);
-					break;
-				case "Save_request":
-					Save_request.save(server,jsonin);
-					break;
-				case "Build_check":
-					Build_request.Build_check(server, jsonin);
-					break;
-				case "Build_request":
-					Build_request.Build(server,jsonin);
-					break;
-				default:
-					System.out.println("Error!");
-					break;
+					case "Login_request":
+						Login_request.Login(server, jsonin);
+						break;
+					case "Save_asset":
+						Save.Save_asset(server, jsonin);
+						break;
+					case "Save_building":
+						Save.Save_building(server, jsonin);
+						break;
+					case "Build_check":
+						Build_request.Build_check(server, jsonin);
+						break;
+					case "Build_request":
+						Build_request.Build(server,jsonin);
+						break;
+					default:
+						System.out.println("Error!");
+						break;
 				}
 			} catch (SocketTimeoutException s) {
 				System.out.println("Socket timed out!");
-				// break;
+				break;
 			} catch (IOException e) {
 				e.printStackTrace();
-				// break;
+				break;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

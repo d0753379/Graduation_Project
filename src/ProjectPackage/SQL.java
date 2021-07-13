@@ -44,6 +44,9 @@ public class SQL {
 		    System.out.println("insert_Update->資料庫連線成功");
 		    
 		    stmt.executeUpdate(sql);
+		    conn.isClosed();
+		    conn.close();
+		    stmt.close();
 		    return 0;
 		} catch(SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
@@ -70,17 +73,23 @@ public class SQL {
 		String Stone = "300";
 		String Food = "300";
 		String Tool = "300";
+		String Time = "1";
 		String sql;
 		String X = "1";
-		String Y = "2";
-		String Build_time = "2000";
-		String Build_name = "StoneBuilding";
+		String Y = "1";
+		//String Build_time = "2000";
+		//String Build_name = "StoneBuilding";
 		//sql = "UPDATE `asset` SET `Game_money`='"+Game_money+"',`Virtual_money`='"+Virtual_money+"',`Metal`='"+Metal+"',`Wood`='"+Wood+"',`Stone`='"+Stone+"',`Food`='"+Food+"',`Tool`='"+Tool+"' WHERE `User_ID`= '"+User_ID+"'";
 		//sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"')";
-		sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`, `Build_time`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"','"+Build_time+"')";
+		//sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`, `Build_time`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"','"+Build_time+"')";
+		sql = "UPDATE `land` SET `Build_production`='3' WHERE `User_ID`='"+User_ID+"' && `X`='"+X+"' && `Y`='"+Y+"'";
 
 		//SQL.insert_update(sql);
 		SQL.insert_update(sql);
+		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
+        //ResultSet rs = SQL.select(sql);
+        
+        
 		/*
 		if(rs==null) {
 			System.out.println("Error");

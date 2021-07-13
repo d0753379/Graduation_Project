@@ -1,6 +1,5 @@
 package ProjectPackage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 
 import org.json.JSONObject;
 
@@ -33,7 +31,7 @@ public class Login_request {
         		Server.socketlist.put(User_ID,server);//加進socklist
         		Server.userlist.put(server,User_ID);
         		jsonout.put("Data_name","Login_Success");
-        		//{"Data_name":"Login_Success"}
+        		//{"Data_name":"Login_Success"}       		
         	}
         	else {
         		jsonout.put("Data_name","Login_Error");
@@ -42,6 +40,12 @@ public class Login_request {
         	str = jsonout.toString();	
         	b=str.getBytes();
         	out.write(b);
+        	
+        	if(jsonout.getString("Data_name").equals("Login_Success")) {
+            	Load_build(server);
+            	Load_asset(server);
+        	}
+        	       	
         } 
 		catch (SQLException ex) {
             // handle the error
@@ -52,47 +56,73 @@ public class Login_request {
 			e.printStackTrace();
 		}	
 	}
-	/*
-	static void Load(Socket server,JSONObject jsonin) throws IOException {
+	
+	static void Load_build(Socket server) throws IOException, SQLException, InterruptedException {
 		String User_ID = Server.userlist.get(server);
-		String X = jsonin.getString("X");
-		String Y = jsonin.getString("Y");
 		JSONObject jsonout = new JSONObject();
         DataOutputStream out = new DataOutputStream(server.getOutputStream());
-        String str = new String(); 
+        
         byte b[] = new byte[1024];
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/graduation_project?useUnicode=true&characterEncoding=UTF-8 & serverTimezone=UTC & user=hj&password=test1234&useSSL=true");
-			System.out.println("資料庫連線成功");
-        	Statement stmt = conn.createStatement();
-        	//撈資料庫確認土地資訊
-        	ResultSet rs = stmt.executeQuery("SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' && `X` = '"+X+"' && `Y`= '"+Y+"'");	            	
-        	if(rs.next()) { //如果資料庫的XY軸上有地圖
-        		Server.socketlist.put(User_ID,server);//加進socklist
-        		Server.userlist.put(server,User_ID);
-        		jsonout.put("Data_name","Login_Success");
-        		//{"Data_name":"Login_Success"}
+        String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
+        ResultSet rs = SQL.select(sql);
+        
+        do{
+        	if(rs!=null) {
+        		Thread.sleep(200);
+            	String Build_name = rs.getString("Build_name");
+            	int Build_time = rs.getInt("Build_time");
+            	int X = rs.getInt("X");
+            	int Y = rs.getInt("Y");
+            	int production = rs.getInt("Build_production");
+            	
+            	jsonout.put("Data_name","Load_build");
+            	jsonout.put("Build_name",Build_name);
+            	jsonout.put("X",X);
+            	jsonout.put("Y",Y);
+            	jsonout.put("Build_time",Build_time);
+            	jsonout.put("Build_production", production);
+            	String str = jsonout.toString();
+                System.out.println(str);
+                b=str.getBytes();
+                out.write(b);
         	}
-        	else {
-        		jsonout.put("Data_name","Login_Error");
-        		//{"Data_name":"Login_Error"}
-        	}
-        	str = jsonout.toString();	
-        	b=str.getBytes();
-        	out.write(b);
-        } 
-		catch (SQLException ex) {
-            // handle the error
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-        } catch (Exception e) {
-			e.printStackTrace();
-		}	
+        }while(rs.next());
 	}
+	static void Load_asset(Socket server) throws IOException, SQLException {
+		String User_ID = Server.userlist.get(server);
+		JSONObject jsonout = new JSONObject();
+        DataOutputStream out = new DataOutputStream(server.getOutputStream());
+        
+        
+        byte b[] = new byte[1024];
+        String sql = "SELECT * FROM `asset` WHERE User_ID = '"+User_ID+"'";
+        ResultSet rs = SQL.select(sql);
+        
+        jsonout.put("Data_name","Load_asset");
+        int Money = rs.getInt("Game_money");
+        int Metal = rs.getInt("Metal");
+        int Wood = rs.getInt("Wood");
+        int Stone = rs.getInt("Stone");
+        int Food = rs.getInt("Food");    
+        int Time = rs.getInt("Time");
+        jsonout.put("Money",Money);
+        jsonout.put("Metal",Metal);
+        jsonout.put("Wood",Wood);
+        jsonout.put("Stone",Stone);
+        jsonout.put("Food",Food);
+        jsonout.put("Time", Time);
+       
+        
+           	        
+
+    	String str = jsonout.toString();
+        System.out.println(str);
+        b=str.getBytes();
+        out.write(b);
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	}
-	*/
+	
 }
