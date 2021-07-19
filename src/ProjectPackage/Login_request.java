@@ -65,7 +65,8 @@ public class Login_request {
         byte b[] = new byte[1024];
         String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
-        
+		Thread.sleep(800);
+
         do{
         	if(rs!=null) {
         		Thread.sleep(200);
