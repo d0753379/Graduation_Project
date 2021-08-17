@@ -6,12 +6,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user20171028/Downloads/final/NEW/json-20201115/json-20201115.jar">
+	<classpathentry kind="lib" path="C:/Users/user20171028/eclipse-workspace/Graduation_Project/json-20201115.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user20171028/Downloads/final/NEW/mysql-connector-java-8.0.22/mysql-connector-java-8.0.22.jar">
+	<classpathentry kind="lib" path="C:/Users/user20171028/eclipse-workspace/Graduation_Project/mysql-connector-java-8.0.22.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

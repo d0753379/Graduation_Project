@@ -65,8 +65,25 @@ public class Save {
 		String production = jsonin.getString("production");
 		String sql;
 		
+		//UPDATE Build_production
 		sql = "UPDATE `land` SET `Build_production`='"+production+"' WHERE `User_ID`='"+UserID+"' && `X`='"+X+"' && `Y`='"+Y+"'";
 			
+	    SQL.insert_update(sql);
+	}
+	static void Save_schedule(Socket server,JSONObject jsonin) throws SQLException {
+		String User_ID = Server.userlist.get(server);
+		
+		String Task_name = jsonin.getString("Task_name");
+		String Period_name = jsonin.getString("Period_name");
+		String PassLevel = jsonin.getString("Pass");
+		String sql;
+		if(checkScheduleFromDB(User_ID)==1) {
+			sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
+		}
+		else {
+			sql = "INSERT INTO `schedule`(`User_ID`, `Task_name`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','"+Task_name+"','"+Period_name+"','"+PassLevel+"')";
+		}
+		
 	    SQL.insert_update(sql);
 	}
 	
@@ -80,6 +97,17 @@ public class Save {
 		}
 		return 0;
 	}
+	static int checkScheduleFromDB(String UserID) throws SQLException {
+		//看db裡有沒有資料 如果有的話return 1 沒有的話return 0 
+	    String sql = "SELECT * FROM `schedule` WHERE `User_ID`= '"+UserID+"'";
+		ResultSet rs = SQL.select(sql);
+		
+		if(rs!=null) {
+			return 1;
+		}
+		return 0;
+	}
+	
 	/*
 	static int checkBuildingFromDB(String UserID,String X,String Y) {
 		String sql = "SELECT * FROM `land` WHERE `User_ID` ='"+UserID+"' && `X`='"+X+"' && `Y`='"+Y+"'";

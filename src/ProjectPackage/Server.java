@@ -47,9 +47,10 @@ public class Server extends Thread implements Runnable {
 				//Â_½u
 				
 				if(!strInputstream.startsWith("{")){
+					System.out.println("out");
 					socketlist.remove(userlist.get(server));
 					userlist.remove(server);
-						break;
+					break;
 				}
 				
 				// server.shutdownInput();
@@ -71,12 +72,15 @@ public class Server extends Thread implements Runnable {
 					case "Save_building":
 						Save.Save_building(server, jsonin);
 						break;
+					case "Save_schedule":
+						Save.Save_schedule(server, jsonin);
+						break;
 					case "Build_check":
 						Build_request.Build_check(server, jsonin);
 						break;
 					case "Build_request":
 						Build_request.Build(server,jsonin);
-						break;
+						break;					
 					default:
 						System.out.println("Error!");
 						break;

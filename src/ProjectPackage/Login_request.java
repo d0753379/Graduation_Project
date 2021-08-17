@@ -42,10 +42,12 @@ public class Login_request {
         	out.write(b);
         	
         	if(jsonout.getString("Data_name").equals("Login_Success")) {
-            	Load_build(server);
-            	Load_asset(server);
-        	}
-        	       	
+        		Thread.sleep(1000);
+        		Load_asset(server);
+            	Load_schedule(server);
+            	Load_build(server);            	
+            	System.out.println("load OK");
+        	}        	       	
         } 
 		catch (SQLException ex) {
             // handle the error
@@ -65,11 +67,12 @@ public class Login_request {
         byte b[] = new byte[1024];
         String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
-		Thread.sleep(800);
+		Thread.sleep(700);
 
         do{
+    		Thread.sleep(300);
         	if(rs!=null) {
-        		Thread.sleep(200);
+
             	String Build_name = rs.getString("Build_name");
             	int Build_time = rs.getInt("Build_time");
             	int X = rs.getInt("X");
@@ -98,7 +101,6 @@ public class Login_request {
         byte b[] = new byte[1024];
         String sql = "SELECT * FROM `asset` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
-        
         jsonout.put("Data_name","Load_asset");
         int Money = rs.getInt("Game_money");
         int Metal = rs.getInt("Metal");
@@ -111,19 +113,42 @@ public class Login_request {
         jsonout.put("Wood",Wood);
         jsonout.put("Stone",Stone);
         jsonout.put("Food",Food);
-        jsonout.put("Time", Time);
-       
-        
-           	        
-
+        jsonout.put("Time", Time);       
+                   	       
     	String str = jsonout.toString();
         System.out.println(str);
         b=str.getBytes();
         out.write(b);
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	static void Load_schedule(Socket server) throws IOException, SQLException {
+		String User_ID = Server.userlist.get(server);
+		JSONObject jsonout = new JSONObject();
+        DataOutputStream out = new DataOutputStream(server.getOutputStream());
+                
+        byte b[] = new byte[1024];
+        String sql = "SELECT * FROM `schedule` WHERE User_ID = '"+User_ID+"'";
+        ResultSet rs = SQL.select(sql);
+        jsonout.put("Data_name","Load_schedule");
+        String Task_name = rs.getString("Task_name");
+        String Period_name = rs.getString("Period_name");
+        String PassLevel = rs.getString("PassLevel");
+
+        jsonout.put("Task_name",Task_name);
+        jsonout.put("Period_name",Period_name);
+        jsonout.put("PassLevel",PassLevel);   
+        
+    	String str = jsonout.toString();
+        System.out.println(str);
+        b=str.getBytes("UTF-8");
+        out.write(b);
 	}
-	
+	static void Load_password(Socket server) throws IOException, SQLException {
+		String User_ID = Server.userlist.get(server);
+		JSONObject jsonout = new JSONObject();
+        DataOutputStream out = new DataOutputStream(server.getOutputStream());
+        
+        byte b[] = new byte[1024];
+        String sql = "SELECT * FROM `asset` WHERE User_ID = '"+User_ID+"'";
+        ResultSet rs = SQL.select(sql);         
+	}
 }
