@@ -72,7 +72,6 @@ public class Login_request {
         do{
     		Thread.sleep(300);
         	if(rs!=null) {
-
             	String Build_name = rs.getString("Build_name");
             	int Build_time = rs.getInt("Build_time");
             	int X = rs.getInt("X");

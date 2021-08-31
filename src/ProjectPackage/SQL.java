@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class SQL {
@@ -75,8 +76,8 @@ public class SQL {
 		String Tool = "300";
 		String Time = "1";
 		String sql;
-		String X = "1";
-		String Y = "1";
+		int X = 1;
+		int Y = 1;
 		String Task_name = "ÂIÀ»¦¬¦¨";
 		String Period_name = "¨©´ß";
 		String PassLevel = "2";
@@ -87,10 +88,32 @@ public class SQL {
 		//sql = "INSERT INTO `land`(`User_ID`, `Build_name`, `X`, `Y`, `Build_time`) VALUES ('"+User_ID+"','"+Build_name+"','"+X+"','"+Y+"','"+Build_time+"')";
 		//sql = "UPDATE `land` SET `Build_production`='3' WHERE `User_ID`='"+User_ID+"' && `X`='"+X+"' && `Y`='"+Y+"'";
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`Pass`='"+Pass+"' WHERE User_ID = '"+User_ID+"'";			
-		sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
-
+		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
+		sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' ORDER BY 'Y' ASC,'X' ASC";
 		//SQL.insert_update(sql);
-		SQL.insert_update(sql);
+		JSONObject jsonout = new JSONObject();
+		ResultSet rs = SQL.select(sql);
+		
+		do{
+			if(rs!=null){
+				JSONObject JSONTemp = new JSONObject();
+	        	String building_name = rs.getString("Build_name");
+	        	int building_time = rs.getInt("Build_time");
+	        	X = rs.getInt("X");
+	        	Y = rs.getInt("Y");
+	        	int production = rs.getInt("Build_production");
+	        	
+	        	JSONTemp.put("building_name",building_name);
+	        	JSONTemp.put("building_time",building_time);
+	        	JSONTemp.put("production",production);
+	        	jsonout.put(X+"-"+Y,JSONTemp);
+			}
+		}while(rs.next());
+		jsonout.put("Data_name","Load_build");
+		String str = jsonout.toString();
+	    System.out.println(str);
+	     //System.out.println(jsonout.getJSONArray("1-2"));
+	     
 		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         //ResultSet rs = SQL.select(sql);
         
