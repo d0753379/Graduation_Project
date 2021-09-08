@@ -19,7 +19,7 @@ public class SQL {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		    
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/graduation_project?useUnicode=true&characterEncoding=UTF-8 & serverTimezone=UTC & user=hj&password=test1234&useSSL=true");
-		    Statement stmt = conn.createStatement();
+		    Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 		    System.out.println("select->資料庫連線成功");
 		    
 		    ResultSet rs = stmt.executeQuery(sql);
@@ -94,6 +94,16 @@ public class SQL {
 		JSONObject jsonout = new JSONObject();
 		ResultSet rs = SQL.select(sql);
 		
+		int RScount = 0;
+		//RS的指標指到最後一個Row 數有幾個
+		if(rs.last()) {
+			RScount = rs.getRow();
+		}
+		
+		rs.first();
+		System.out.println(RScount);
+		
+		
 		do{
 			if(rs!=null){
 				JSONObject JSONTemp = new JSONObject();
@@ -112,7 +122,7 @@ public class SQL {
 		jsonout.put("Data_name","Load_build");
 		String str = jsonout.toString();
 	    System.out.println(str);
-	     //System.out.println(jsonout.getJSONArray("1-2"));
+	    //System.out.println(jsonout.getJSONObject("1-1"));
 	     
 		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         //ResultSet rs = SQL.select(sql);

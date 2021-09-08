@@ -67,8 +67,14 @@ public class Login_request {
         byte b[] = new byte[1024];
         String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
+		
+		int Build_target = 0;
+		if(rs.last()) {
+			Build_target = rs.getRow();
+		}
+		rs.first();
+		
 		Thread.sleep(700);
-
         do{
     		Thread.sleep(300);
         	if(rs!=null) {
@@ -84,6 +90,7 @@ public class Login_request {
             	jsonout.put("Y",Y);
             	jsonout.put("Build_time",Build_time);
             	jsonout.put("Build_production", production);
+            	jsonout.put("Build_target",Build_target);
             	String str = jsonout.toString();
                 System.out.println(str);
                 b=str.getBytes();
