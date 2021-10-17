@@ -66,7 +66,8 @@ public class SQL {
 			if(!rs.next())break;
 		}
 		*/
-		String User_ID = "test1234";
+		String User_ID = "abc123";
+		String User_password = "abc123";
 		String Game_money = "200";
 		String Virtual_money = "300";
 		String Metal = "300";
@@ -89,8 +90,11 @@ public class SQL {
 		//sql = "UPDATE `land` SET `Build_production`='3' WHERE `User_ID`='"+User_ID+"' && `X`='"+X+"' && `Y`='"+Y+"'";
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`Pass`='"+Pass+"' WHERE User_ID = '"+User_ID+"'";			
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
-		sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' ORDER BY 'Y' ASC,'X' ASC";
-		//SQL.insert_update(sql);
+		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' ORDER BY 'Y' ASC,'X' ASC";
+		sql = "INSERT INTO `user`(`User_ID`, `User_password`) VALUES ('"+User_ID+"','"+User_password+"')";
+
+		SQL.insert_update(sql);
+		/*
 		JSONObject jsonout = new JSONObject();
 		ResultSet rs = SQL.select(sql);
 		
@@ -134,5 +138,6 @@ public class SQL {
 		}
 		System.out.println(rs.getString("Build_name").toString());
 		*/
+		
 	}
 }

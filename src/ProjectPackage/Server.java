@@ -80,7 +80,10 @@ public class Server extends Thread implements Runnable {
 						break;
 					case "Build_request":
 						Build_request.Build(server,jsonin);
-						break;					
+						break;
+					case "CreatAccount_request":
+						Create_Account.CreateAccount(server,jsonin);
+						break;
 					default:
 						System.out.println("Error!");
 						break;
