@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class Build_request {
 
-	static void Build_check(Socket server,JSONObject jsonin) throws IOException{
+	static void Build_check(Socket server,JSONObject jsonin) throws IOException, SQLException{
 		String User_ID = Server.userlist.get(server);
 		String Button_name = jsonin.getString("Button_name");
 		
@@ -55,7 +55,8 @@ public class Build_request {
         str = jsonout.toString();
         System.out.println(str);
         b=str.getBytes();
-        out.write(b);	        		
+        out.write(b);
+        rs.close();
 	}
 	static void Build(Socket server,JSONObject jsonin){
 		String User_ID = Server.userlist.get(server);

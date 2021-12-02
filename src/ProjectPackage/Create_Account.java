@@ -28,16 +28,22 @@ public class Create_Account {
 		
 		ResultSet rs = SQL.select(sql);
 		if(rs!=null) { //撈的到東西的話就是有人使用這個User_ID，傳回Error
-			jsonout.put("Data_name","CreatAccount_Error");//失敗回傳CreatAccount_Error
+			//失敗回傳CreatAccount_Error
+			jsonout.put("Data_name","CreatAccount_Error");
 		}
 		else {
-			sql = "INSERT INTO `user`(`User_ID`, `User_password`) VALUES ('"+User_ID+"','"+User_password+"')";			SQL.insert_update(sql);
-			jsonout.put("Data_name","CreatAccount_Success");//成功回傳CreatAccount_Success讓頁面可以跳轉
+			sql = "INSERT INTO `user`(`User_ID`, `User_password`) "
+					+ "VALUES ('"+User_ID+"','"+User_password+"')";			
+			SQL.insert_update(sql);
+			//成功回傳CreatAccount_Success讓頁面可以跳轉
+			jsonout.put("Data_name","CreatAccount_Success");
 		}
 		System.out.println(jsonout.getString("Data_name"));
 		str = jsonout.toString();	
         b=str.getBytes();
         out.write(b);
+        rs.close();
 	}
 	
 }
+

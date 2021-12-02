@@ -45,9 +45,9 @@ public class Server extends Thread implements Runnable {
 				strInputstream = new String(by);// byte轉String
 				
 				//斷線
-				
 				if(!strInputstream.startsWith("{")){
-					System.out.println("out");
+					//System.out.println(strInputstream);
+					System.out.println(server.getInetAddress().toString()+"_out");
 					socketlist.remove(userlist.get(server));
 					userlist.remove(server);
 					break;
@@ -57,6 +57,7 @@ public class Server extends Thread implements Runnable {
 				// inputStream.close();
 				// baos.close();
 				// 將socket接受到的數據(byte)還原為JSONObject
+				System.out.println(strInputstream);
 				JSONObject jsonin = new JSONObject(strInputstream);
 
 				System.out.println(jsonin.toString());
@@ -108,7 +109,8 @@ public class Server extends Thread implements Runnable {
 			try {
 				System.out.println("等待連接...");
 				Socket server = serverSocket.accept();
-
+				String clientIP=server.getInetAddress().toString();
+				System.out.println(clientIP+"已連線");
 				socket.add(server);
 				Thread t = new Server(server);
 				t.start();

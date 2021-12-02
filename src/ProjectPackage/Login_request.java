@@ -26,8 +26,13 @@ public class Login_request {
 			String User_password=jsonin.getString("User_password");
         	Statement stmt = conn.createStatement();
         	//撈資料庫確認登入資訊	
-        	ResultSet rs = stmt.executeQuery("SELECT * FROM `user` WHERE User_ID = '"+User_ID+"' && User_password = '"+User_password+"'"  );	            	
-        	if(rs.next()) { //如果資料庫有這組帳密
+        	String sql = "SELECT * FROM `user` WHERE User_ID = '"+User_ID+"' && User_password = '"+User_password+"'";
+        	//ResultSet rs = stmt.executeQuery("SELECT * FROM `user` WHERE User_ID = '"+User_ID+"' && User_password = '"+User_password+"'"  );	            	
+        	ResultSet rs = SQL.select(sql);
+        	//if(rs.next()) { //如果資料庫有這組帳密       	
+        	
+        	if(rs!=null) {
+        		System.out.println(rs.getString("User_ID"));
         		Server.socketlist.put(User_ID,server);//加進socklist
         		Server.userlist.put(server,User_ID);
         		jsonout.put("Data_name","Login_Success");
@@ -37,7 +42,8 @@ public class Login_request {
         		jsonout.put("Data_name","Login_Error");
         		//{"Data_name":"Login_Error"}
         	}
-        	str = jsonout.toString();	
+        	str = jsonout.toString();
+        	System.out.println(str);
         	b=str.getBytes();
         	out.write(b);
         	
@@ -98,6 +104,7 @@ public class Login_request {
                 out.write(b);
         	}
         }while(rs.next());
+        rs.close();
 	}
 	static void Load_asset(Socket server) throws IOException, SQLException {
 		String User_ID = Server.userlist.get(server);
@@ -126,6 +133,7 @@ public class Login_request {
         System.out.println(str);
         b=str.getBytes();
         out.write(b);
+        rs.close();
 	}
 	static void Load_schedule(Socket server) throws IOException, SQLException {
 		String User_ID = Server.userlist.get(server);
@@ -148,6 +156,7 @@ public class Login_request {
         System.out.println(str);
         b=str.getBytes("UTF-8");
         out.write(b);
+        rs.close();
 	}
 	static void Load_password(Socket server) throws IOException, SQLException {
 		String User_ID = Server.userlist.get(server);
@@ -156,6 +165,7 @@ public class Login_request {
         
         byte b[] = new byte[1024];
         String sql = "SELECT * FROM `asset` WHERE User_ID = '"+User_ID+"'";
-        ResultSet rs = SQL.select(sql);         
+        ResultSet rs = SQL.select(sql);   
+        rs.close();
 	}
 }

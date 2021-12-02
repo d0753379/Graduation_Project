@@ -24,7 +24,7 @@ public class SQL {
 		    
 		    ResultSet rs = stmt.executeQuery(sql);
 		    if(rs.next()) {
-		    	return rs;
+		    	return rs;	    	
 		    }
 		} catch(SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
@@ -48,6 +48,7 @@ public class SQL {
 		    conn.isClosed();
 		    conn.close();
 		    stmt.close();
+		    
 		    return 0;
 		} catch(SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
