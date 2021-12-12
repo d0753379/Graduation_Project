@@ -86,6 +86,17 @@ public class Save {
 		
 	    SQL.insert_update(sql);
 	}
+	static void Save_mission(Socket server,JSONObject jsonin) {
+		String UserID = Server.userlist.get(server);
+		
+		int Mission_order = jsonin.getInt("Mission_order");
+		String Mission_status = jsonin.getString("Mission_status");
+		
+		String sql;		
+		//UPDATE Build_production
+		sql = "UPDATE `Mission_new` SET `Mission_status`='"+Mission_status+"' WHERE `User_ID`='"+UserID+"' && `Mission_order`='"+Mission_order+"'";
+	    SQL.insert_update(sql);
+	}
 	
 	static int checkAssetFromDB(String UserID) throws SQLException {
 		//看db裡有沒有資料 如果有的話return 1 沒有的話return 0 
@@ -107,6 +118,8 @@ public class Save {
 		}
 		return 0;
 	}
+	
+	
 	
 	/*
 	static int checkBuildingFromDB(String UserID,String X,String Y) {

@@ -67,7 +67,7 @@ public class SQL {
 			if(!rs.next())break;
 		}
 		*/
-		String User_ID = "aaa";
+		String User_ID = "test1234";
 		String User_password = "abc123";
 		String Game_money = "200";
 		String Virtual_money = "300";
@@ -93,9 +93,18 @@ public class SQL {
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
 		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' ORDER BY 'Y' ASC,'X' ASC";
 		//sql = "INSERT INTO `user`(`User_ID`, `User_password`) VALUES ('"+User_ID+"','"+User_password+"')";
-		sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','0','0','0','0','0','0','0','0')";
-
-		SQL.insert_update(sql);
+		//sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','0','0','0','0','0','0','0','0')";
+		/*for(int i=1;i<=7;i++) {
+			sql = "INSERT INTO `mission_new`(`User_ID`, `Mission_order`, `Mission_isdone`) VALUES ('"+User_ID+"','"+i+"','0')";
+			SQL.insert_update(sql);
+		}
+		*/
+		sql = "SELECT * FROM `Mission_new` WHERE User_ID = '"+User_ID+"' && Mission_status != '0'";
+	    ResultSet rs = SQL.select(sql);		    
+	    do {
+	    	int Mission_order = rs.getInt("Mission_order");
+	    	System.out.println(Mission_order);
+	    }while(rs.next());
 		/*
 		JSONObject jsonout = new JSONObject();
 		ResultSet rs = SQL.select(sql);

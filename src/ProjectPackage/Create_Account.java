@@ -39,6 +39,10 @@ public class Create_Account {
 			SQL.insert_update(sql);
 			sql = "INSERT INTO `schedule`(`User_ID`, `Task_name`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','','貝殼時期','0')";
 			SQL.insert_update(sql);
+			for(int i=1;i<=7;i++) {
+				sql = "INSERT INTO `mission_new`(`User_ID`, `Mission_order`, `Mission_status`) VALUES ('"+User_ID+"','"+i+"','0')";
+				SQL.insert_update(sql);
+			}			
 			//成功回傳CreatAccount_Success讓頁面可以跳轉
 			jsonout.put("Data_name","CreatAccount_Success");
 		}

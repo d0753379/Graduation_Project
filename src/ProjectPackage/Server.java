@@ -76,6 +76,9 @@ public class Server extends Thread implements Runnable {
 					case "Save_schedule":
 						Save.Save_schedule(server, jsonin);
 						break;
+					case "Save_mission":
+						Save.Save_mission(server, jsonin);
+						break;
 					case "Build_check":
 						Build_request.Build_check(server, jsonin);
 						break;
