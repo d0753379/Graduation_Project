@@ -56,7 +56,6 @@ public class Build_request {
         System.out.println(str);
         b=str.getBytes();
         out.write(b);
-        rs.close();
 	}
 	static void Build(Socket server,JSONObject jsonin){
 		String User_ID = Server.userlist.get(server);

@@ -67,7 +67,7 @@ public class SQL {
 			if(!rs.next())break;
 		}
 		*/
-		String User_ID = "abc123";
+		String User_ID = "aaa";
 		String User_password = "abc123";
 		String Game_money = "200";
 		String Virtual_money = "300";
@@ -92,7 +92,8 @@ public class SQL {
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`Pass`='"+Pass+"' WHERE User_ID = '"+User_ID+"'";			
 		//sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
 		//sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"' ORDER BY 'Y' ASC,'X' ASC";
-		sql = "INSERT INTO `user`(`User_ID`, `User_password`) VALUES ('"+User_ID+"','"+User_password+"')";
+		//sql = "INSERT INTO `user`(`User_ID`, `User_password`) VALUES ('"+User_ID+"','"+User_password+"')";
+		sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','0','0','0','0','0','0','0','0')";
 
 		SQL.insert_update(sql);
 		/*

@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class Create_Account {
 
-	static void CreateAccount(Socket server,JSONObject jsonin) throws IOException, JSONException, SQLException {
+	static void CreateAccount(Socket server,JSONObject jsonin) throws IOException, JSONException, SQLException, InterruptedException {
 		DataOutputStream out = new DataOutputStream(server.getOutputStream());
         String str = new String(); 
         JSONObject jsonout = new JSONObject();
@@ -35,6 +35,10 @@ public class Create_Account {
 			sql = "INSERT INTO `user`(`User_ID`, `User_password`) "
 					+ "VALUES ('"+User_ID+"','"+User_password+"')";			
 			SQL.insert_update(sql);
+			sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','50','0','0','0','0','0','0','0')";
+			SQL.insert_update(sql);
+			sql = "INSERT INTO `schedule`(`User_ID`, `Task_name`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','','貝殼時期','0')";
+			SQL.insert_update(sql);
 			//成功回傳CreatAccount_Success讓頁面可以跳轉
 			jsonout.put("Data_name","CreatAccount_Success");
 		}
@@ -42,7 +46,7 @@ public class Create_Account {
 		str = jsonout.toString();	
         b=str.getBytes();
         out.write(b);
-        rs.close();
+        //rs.close();
 	}
 	
 }

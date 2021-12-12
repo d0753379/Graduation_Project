@@ -65,46 +65,73 @@ public class Login_request {
 		}	
 	}
 	
-	static void Load_build(Socket server) throws IOException, SQLException, InterruptedException {
+	static int Count_column(String User_ID) {
+		 String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
+	     ResultSet rs = SQL.select(sql);
+	     try {
+			rs.isLast();
+			int count = rs.getRow();
+			return count;
+		} catch (SQLException e) {
+			System.out.println("Login_74");
+			e.printStackTrace();
+		}
+	     System.out.println("Login_77");
+	     return 0;
+	}
+	static void Load_build(Socket server) throws IOException,  InterruptedException, SQLException {
 		String User_ID = Server.userlist.get(server);
 		JSONObject jsonout = new JSONObject();
         DataOutputStream out = new DataOutputStream(server.getOutputStream());
         
-        byte b[] = new byte[1024];
+        byte b[] = new byte[1024];                   
+        
         String sql = "SELECT * FROM `land` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
-		
-		int Build_target = 0;
-		if(rs.last()) {
-			Build_target = rs.getRow();
+        
+        int Build_target = 0;
+        
+		if(rs==null) {		
+			Thread.sleep(100);
+			jsonout.put("Data_name","Load_build_zero");
+			String str = jsonout.toString();
+            System.out.println(str);
+            b=str.getBytes();
+            out.write(b);
+            System.out.println("send");
 		}
-		rs.first();
+		else {
+
+			rs.last();
+			Build_target = rs.getRow();
+			rs.first();	
+			Thread.sleep(1000);			
+	        do{
+	    		Thread.sleep(100);
+	        	if(rs!=null) {
+	            	String Build_name = rs.getString("Build_name");
+	            	int Build_time = rs.getInt("Build_time");
+	            	int X = rs.getInt("X");
+	            	int Y = rs.getInt("Y");
+	            	int production = rs.getInt("Build_production");
+	            	
+	            	jsonout.put("Data_name","Load_build");
+	            	jsonout.put("Build_name",Build_name);
+	            	jsonout.put("X",X);
+	            	jsonout.put("Y",Y);
+	            	jsonout.put("Build_time",Build_time);
+	            	jsonout.put("Build_production", production);
+	            	jsonout.put("Build_target",Build_target);
+	            	String str = jsonout.toString();
+	                System.out.println(str);
+	                b=str.getBytes();
+	                out.write(b);
+	        	}       	
+	        }while(rs.next());		
+		}
+					
+//////////////////////////////////////////////////		
 		
-		Thread.sleep(1000);
-		
-        do{
-    		Thread.sleep(100);
-        	if(rs!=null) {
-            	String Build_name = rs.getString("Build_name");
-            	int Build_time = rs.getInt("Build_time");
-            	int X = rs.getInt("X");
-            	int Y = rs.getInt("Y");
-            	int production = rs.getInt("Build_production");
-            	
-            	jsonout.put("Data_name","Load_build");
-            	jsonout.put("Build_name",Build_name);
-            	jsonout.put("X",X);
-            	jsonout.put("Y",Y);
-            	jsonout.put("Build_time",Build_time);
-            	jsonout.put("Build_production", production);
-            	jsonout.put("Build_target",Build_target);
-            	String str = jsonout.toString();
-                System.out.println(str);
-                b=str.getBytes();
-                out.write(b);
-        	}
-        }while(rs.next());
-        rs.close();
 	}
 	static void Load_asset(Socket server) throws IOException, SQLException {
 		String User_ID = Server.userlist.get(server);
