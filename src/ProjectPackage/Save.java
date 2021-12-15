@@ -73,15 +73,15 @@ public class Save {
 	static void Save_schedule(Socket server,JSONObject jsonin) throws SQLException {
 		String User_ID = Server.userlist.get(server);
 		
-		String Task_name = jsonin.getString("Task_name");
+		String Already_movie = jsonin.getString("Already_movie");
 		String Period_name = jsonin.getString("Period_name");
 		String PassLevel = jsonin.getString("Pass");
 		String sql;
 		if(checkScheduleFromDB(User_ID)==1) {
-			sql = "UPDATE `schedule` SET `Task_name`='"+Task_name+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
+			sql = "UPDATE `schedule` SET `Already_movie`='"+Already_movie+"',`Period_name`='"+Period_name+"',`PassLevel`='"+PassLevel+"' WHERE User_ID = '"+User_ID+"'";			
 		}
 		else {
-			sql = "INSERT INTO `schedule`(`User_ID`, `Task_name`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','"+Task_name+"','"+Period_name+"','"+PassLevel+"')";
+			sql = "INSERT INTO `schedule`(`User_ID`, `Already_movie`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','"+Already_movie+"','"+Period_name+"','"+PassLevel+"')";
 		}
 		
 	    SQL.insert_update(sql);

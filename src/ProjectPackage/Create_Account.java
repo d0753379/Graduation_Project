@@ -35,9 +35,9 @@ public class Create_Account {
 			sql = "INSERT INTO `user`(`User_ID`, `User_password`) "
 					+ "VALUES ('"+User_ID+"','"+User_password+"')";			
 			SQL.insert_update(sql);
-			sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','50','0','0','0','0','0','0','0')";
+			sql = "INSERT INTO `asset`(`User_ID`, `Game_money`, `Virtual_money`, `Metal`, `Wood`, `Stone`, `Food`, `Tool`, `Time`) VALUES ('"+User_ID+"','0','0','0','0','0','0','0','0')";
 			SQL.insert_update(sql);
-			sql = "INSERT INTO `schedule`(`User_ID`, `Task_name`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','','貝殼時期','0')";
+			sql = "INSERT INTO `schedule`(`User_ID`, `Already_movie`, `Period_name`, `PassLevel`) VALUES ('"+User_ID+"','0','貝殼時期','0')";
 			SQL.insert_update(sql);
 			for(int i=1;i<=7;i++) {
 				sql = "INSERT INTO `mission_new`(`User_ID`, `Mission_order`, `Mission_status`) VALUES ('"+User_ID+"','"+i+"','0')";

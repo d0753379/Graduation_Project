@@ -50,8 +50,8 @@ public class Login_request {
         	if(jsonout.getString("Data_name").equals("Login_Success")) {
         		Thread.sleep(1000);
         		Load_schedule(server);
-            	Load_mission(server);
-            	Load_asset(server);           	
+            	Load_asset(server); 
+            	Load_mission(server);          	
             	Load_build(server);
             	System.out.println("load OK");
         	}        	       	
@@ -102,7 +102,6 @@ public class Login_request {
             System.out.println("send");
 		}
 		else {
-
 			rs.last();
 			Build_target = rs.getRow();
 			rs.first();	
@@ -134,7 +133,8 @@ public class Login_request {
 //////////////////////////////////////////////////		
 		
 	}
-	static void Load_asset(Socket server) throws IOException, SQLException {
+	static void Load_asset(Socket server) throws IOException, SQLException, InterruptedException {
+		Thread.sleep(200);
 		String User_ID = Server.userlist.get(server);
 		JSONObject jsonout = new JSONObject();
         DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -172,11 +172,11 @@ public class Login_request {
         String sql = "SELECT * FROM `schedule` WHERE User_ID = '"+User_ID+"'";
         ResultSet rs = SQL.select(sql);
         jsonout.put("Data_name","Load_schedule");
-        String Task_name = rs.getString("Task_name");
+        String Already_movie = rs.getString("Already_movie");
         String Period_name = rs.getString("Period_name");
         String PassLevel = rs.getString("PassLevel");
 
-        jsonout.put("Task_name",Task_name);
+        jsonout.put("Already_movie",Already_movie);
         jsonout.put("Period_name",Period_name);
         jsonout.put("PassLevel",PassLevel);   
         
@@ -206,18 +206,24 @@ public class Login_request {
         String sql = "SELECT * FROM `Mission_new` WHERE User_ID = '"+User_ID+"' && Mission_status != '0'";
 	    ResultSet rs = SQL.select(sql);		    
 	    do {
-	    	Thread.sleep(200);
-	    	jsonout.put("Data_name","Load_mission");
-            String Mission_order = rs.getString("Mission_order");
-            int Mission_status = rs.getInt("Mission_status");
-            
-            jsonout.put("Mission_order",Mission_order);
-            jsonout.put("Mission_status",Mission_status);
-            
-            String str = jsonout.toString();
-            System.out.println(str);
-            b=str.getBytes("UTF-8");
-            out.write(b);
+	    	if(rs==null) {		
+	    		Thread.sleep(200);
+	    		break;
+			}
+	    	else {
+	    		Thread.sleep(200);
+		    	jsonout.put("Data_name","Load_mission");
+	            String Mission_order = rs.getString("Mission_order");
+	            int Mission_status = rs.getInt("Mission_status");
+	            
+	            jsonout.put("Mission_order",Mission_order);
+	            jsonout.put("Mission_status",Mission_status);
+	            
+	            String str = jsonout.toString();
+	            System.out.println(str);
+	            b=str.getBytes("UTF-8");
+	            out.write(b);
+	    	}	    	
 	    }while(rs.next());        
 	}
 }
